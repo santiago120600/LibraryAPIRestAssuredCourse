@@ -1,0 +1,47 @@
+services:
+  api_service:
+    build:
+      context: .
+      dockerfile: Containerfile
+    container_name: library-api-course
+    restart: on-failure
+    depends_on:
+      - mysqldb
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysqldb:3306/APIDevelopSpringBoot?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true"
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD} 
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+    networks:
+      - library-network
+      
+  mysqldb:
+    image: "mysql:8.0"
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    networks:
+      - library-network
+  nginx:
+    image: nginx:1.29.3-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - nginx_data:/var/log/nginx
+    depends_on:
+      - api_service
+    networks:
+      - library-network
+volumes:
+  mysql_data:
+  nginx_data:
+
+networks:
+  library-network:
