@@ -31,7 +31,7 @@ services:
   nginx:
     image: nginx:1.29.3-alpine
     ports:
-      - 80:80
+      - 8081:80
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - nginx_data:/var/log/nginx

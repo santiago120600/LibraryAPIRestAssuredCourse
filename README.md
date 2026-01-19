@@ -11,7 +11,7 @@
 | `santi`  | `password` |
 
 ### Swagger UI
-`http://localhost/swagger-ui/index.html`
+`http://localhost:8081/swagger-ui/index.html`
 
 ### Swagger Docs
-`http://localhost/v3/api-docs`
+`http://localhost:8081/v3/api-docs`
