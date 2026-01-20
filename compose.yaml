@@ -1,5 +1,6 @@
 services:
   api_service:
+    container_name: api_service
     build:
       context: .
       dockerfile: Containerfile
@@ -17,6 +18,7 @@ services:
       - library-network
       
   mysqldb:
+    container_name: mysqldb
     image: "mysql:8.0"
     restart: always
     volumes:
@@ -29,6 +31,7 @@ services:
     networks:
       - library-network
   nginx:
+    container_name: nginx
     image: nginx:1.29.3-alpine
     ports:
       - 8081:80
@@ -45,3 +48,4 @@ volumes:
 
 networks:
   library-network:
+    driver: bridge
